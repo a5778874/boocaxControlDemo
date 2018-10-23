@@ -1,6 +1,6 @@
 package com.example.boobasedriver.constant;
 
-import com.zzh.serialportkit.utlis.SerialPortUtil;
+
 
 /**
  * create by zzh on 2018/8/1

@@ -1,1 +1,1 @@
-include ':app', ':boobasedriver',"serialportkit"
+include ':app', ':boobasedriver', ':AIUI', ':wificontroldemo', ':boobasedriver2',":UARTKit" ,':common'

@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+android {
+	compileSdkVersion 27
+
+	
+	defaultConfig {
+		minSdkVersion 19
+		targetSdkVersion 27
+		ndk {
+			abiFilters 'armeabi-v7a', 'armeabi',"x86"
+		}
+	}
+
+    packagingOptions {
+        pickFirst 'lib/armeabi/libserial_port.so'
+        pickFirst 'lib/armeabi-v7a/libserial_port.so'
+        pickFirst 'lib/x86/libserial_port.so'
+    }
+
+	lintOptions {
+		abortOnError false
+	}
+	
+	externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}
+
+
+dependencies {
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'http://maven.iflytek.com:8081/nexus/content/repositories/YGNOME-snapshot/') {
+                authentication(userName: 'YGNOME', password: 'P@ss123')
+            }
+
+            pom.project {
+                version '1.0.0-SNAPSHOT'
+                artifactId 'UARTKit'
+                groupId 'com.iflytek.uart.helper'
+                packaging 'aar'
+                description 'UARTKit library'
+            }
+        }
+    }
+}
+

@@ -3,7 +3,8 @@ package com.example.boobasedriver.boobase;
 import android.util.Log;
 
 import com.example.boobasedriver.model.MyInteger;
-import com.zzh.serialportkit.utlis.SerialDataUtils;
+import com.iflytek.aiui.uartkit.util.SerialDataUtils;
+
 
 import java.io.UnsupportedEncodingException;
 

@@ -15,8 +15,9 @@ import com.example.boobasedriver.eventbus.MoveStatus;
 import com.example.boobasedriver.eventbus.SensorStatus;
 import com.example.boobasedriver.interfaces.IController;
 import com.example.boobasedriver.model.MyInteger;
-import com.zzh.serialportkit.utlis.SerialDataUtils;
-import com.zzh.serialportkit.utlis.SerialPortUtil;
+import com.iflytek.aiui.uartkit.util.SerialDataUtils;
+import com.iflytek.aiui.uartkit.util.SerialPortUtil;
+
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -127,7 +128,7 @@ public class BooBaseController implements LifecycleObserver, IController {
                 EventBus.getDefault().post(new EmergencyStatus(buffer, (int) buffer[4]));
             } else if (functionCodeHex.equals(BoobaseCMD.SENSOR_STATUS.getFunctionCode())) {
                 //传感器的状态通知
-                EventBus.getDefault().post(new SensorStatus(buffer, (int) buffer[4],(int) buffer[5],(int) buffer[6],(int) buffer[7],(int) buffer[8]));
+                EventBus.getDefault().post(new SensorStatus(buffer, (int) buffer[4], (int) buffer[5], (int) buffer[6], (int) buffer[7], (int) buffer[8]));
             } else {
                 //其他
             }
@@ -244,9 +245,10 @@ public class BooBaseController implements LifecycleObserver, IController {
      */
     @Override
     public void navigationTo(float x, float y, float raw) {
-        if (controlCodeFlag != FLAG_NAVIGATION_TO) {
+        //带参数控制方法标志位必须加上能代表唯一的参数，否则参数改变也认为是同上一个命令不重新生成控制码
+        if (controlCodeFlag != FLAG_NAVIGATION_TO + (int)(x * 10000)+(int)(y * 1000) + (int)(raw * 100)) {
             controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.NAVIGATION.getFunctionCode(), x, y, yaw);
-            controlCodeFlag = FLAG_NAVIGATION_TO;
+            controlCodeFlag = FLAG_NAVIGATION_TO+ (int)(x * 10000)+(int)(y * 1000) + (int)(raw * 100);
         }
         instance.startSendCmds();
     }
@@ -258,9 +260,10 @@ public class BooBaseController implements LifecycleObserver, IController {
      */
     @Override
     public void rotationTo(float rot) {
-        if (controlCodeFlag != FLAG_ROTATION_TO) {
+        //带参数控制方法标志位必须加上能代表唯一的参数，否则参数改变也认为是同上一个命令不重新生成控制码
+        if (controlCodeFlag != FLAG_ROTATION_TO+ (int)(rot * 100)) {
             controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.ROTATION.getFunctionCode(), rot);
-            controlCodeFlag = FLAG_ROTATION_TO;
+            controlCodeFlag = FLAG_ROTATION_TO+ (int)(rot * 100);
         }
         instance.startSendCmds();
     }
@@ -273,23 +276,23 @@ public class BooBaseController implements LifecycleObserver, IController {
      */
     @Override
     public void poiTo(int index) {
-        if (controlCodeFlag != FLAG_POI_BY_INDEX) {
+        //带参数控制方法标志位必须加上能代表唯一的参数，否则参数改变也认为是同上一个命令不重新生成控制码
+        if (controlCodeFlag != FLAG_POI_BY_INDEX+index*100) {
             controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.POI_BY_INDEX.getFunctionCode(), index);
-            controlCodeFlag = FLAG_POI_BY_INDEX;
+            controlCodeFlag = FLAG_POI_BY_INDEX+index*100;
         }
         instance.startSendCmds();
     }
 
     @Override
     public void poiTo(String name) {
-        // TODO: 2018/8/10  发送命令串口有反应，但没动 
-        if (controlCodeFlag != FLAG_POI_BY_NAME) {
+        if (controlCodeFlag != FLAG_POI_BY_NAME+ name.hashCode()) {
             try {
                 controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.POI_BY_NAME.getFunctionCode(), new MyInteger(name.getBytes("utf-8").length), name);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            controlCodeFlag = FLAG_POI_BY_NAME;
+            controlCodeFlag = FLAG_POI_BY_NAME+ name.hashCode();
         }
         instance.startSendCmds();
     }
@@ -301,9 +304,10 @@ public class BooBaseController implements LifecycleObserver, IController {
      */
     @Override
     public void travelRandom(float sleepTime) {
-        if (controlCodeFlag != FLAG_TRAVEL_RANDOM) {
+        //带参数控制方法标志位必须加上能代表唯一的参数，否则参数改变也认为是同上一个命令不重新生成控制码
+        if (controlCodeFlag != FLAG_TRAVEL_RANDOM+(int)(sleepTime * 100)) {
             controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.TRAVEL_RANDOM.getFunctionCode(), sleepTime);
-            controlCodeFlag = FLAG_TRAVEL_RANDOM;
+            controlCodeFlag = FLAG_TRAVEL_RANDOM+(int)(sleepTime * 100);
         }
         instance.startSendCmds();
     }
@@ -317,10 +321,10 @@ public class BooBaseController implements LifecycleObserver, IController {
      */
     @Override
     public void travelOrdinal(float sleepTime, boolean loop) {
-        if (controlCodeFlag != FLAG_TRAVEL_ORDINAL) {
-            int loopFlag = loop ? 1 : 0;
+        int loopFlag = loop ? 1 : 0;
+        if (controlCodeFlag != FLAG_TRAVEL_ORDINAL+(int) (sleepTime*1000)+loopFlag*100) {
             controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.TRAVEL_ORDINAL.getFunctionCode(), loopFlag, sleepTime);
-            controlCodeFlag = FLAG_TRAVEL_ORDINAL;
+            controlCodeFlag = FLAG_TRAVEL_ORDINAL+(int) (sleepTime*1000)+loopFlag*100;
         }
         instance.startSendCmds();
     }
@@ -375,11 +379,21 @@ public class BooBaseController implements LifecycleObserver, IController {
         instance.startSendCmds();
     }
 
+
+    /**
+     * 连接wifi
+     * @param ssid
+     * @param password
+     */
     @Override
     public void configureWIFI(String ssid, String password) {
-        if (controlCodeFlag != FLAG_CONFIG_WIFI) {
-            // TODO: 2018/8/6  配置wifi
-            controlCodeFlag = FLAG_CONFIG_WIFI;
+        if (controlCodeFlag != FLAG_CONFIG_WIFI+ssid.hashCode()*10+password.hashCode()) {
+            try {
+                controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.CONFIGURE_WIFI.getFunctionCode(), new MyInteger(ssid.getBytes("utf-8").length),new MyInteger(password.getBytes("utf-8").length), ssid,password);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            controlCodeFlag = FLAG_CONFIG_WIFI+ssid.hashCode()*10+password.hashCode();
         }
         instance.startSendCmds();
     }

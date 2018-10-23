@@ -19,7 +19,7 @@ import robot.boocax.com.sdkmodule.entity.entity_sdk.for_app.UDPList;
 /**
  * create by zzh on 2018/8/9
  */
-public class NetControlActivity extends AppCompatActivity{
+public class NetControlActivity extends BaseActivity{
 private  final String TAG="TAG";
 
     @Override

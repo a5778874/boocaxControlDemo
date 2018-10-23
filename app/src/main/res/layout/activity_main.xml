@@ -39,11 +39,36 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/safeMove"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="移动命令" />
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/et_ssid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="ssid"
+            android:text="TP-LINK_5G_Gmeri_ep" />
+
+        <EditText
+            android:id="@+id/et_psd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="psd"
+            android:text="guoji123" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="connectWIFI"
+            android:text="连wifi" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,8 +124,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="x"
-            android:inputType="number|numberDecimal"
-            android:text="-7.5" />
+            android:inputType="numberSigned|numberDecimal"
+            android:text="-3.95" />
 
         <EditText
             android:id="@+id/et_y"
@@ -108,8 +133,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="y"
-            android:inputType="number|numberDecimal"
-            android:text="4" />
+            android:inputType="numberSigned|numberDecimal"
+            android:text="-3.07" />
 
         <EditText
             android:id="@+id/et_raw"

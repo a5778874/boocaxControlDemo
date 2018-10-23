@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AIUI/AIUI.iml" filepath="$PROJECT_DIR$/AIUI/AIUI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UARTKit/UARTKit.iml" filepath="$PROJECT_DIR$/UARTKit/UARTKit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/boobasedriver/boobasedriver.iml" filepath="$PROJECT_DIR$/boobasedriver/boobasedriver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/boobasedriver2/boobasedriver2.iml" filepath="$PROJECT_DIR$/boobasedriver2/boobasedriver2.iml" />
       <module fileurl="file://$PROJECT_DIR$/boocaxControlDemo.iml" filepath="$PROJECT_DIR$/boocaxControlDemo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/serialportkit/serialportkit.iml" filepath="$PROJECT_DIR$/serialportkit/serialportkit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wificontroldemo/wificontroldemo.iml" filepath="$PROJECT_DIR$/wificontroldemo/wificontroldemo.iml" />
     </modules>
   </component>
 </project>
