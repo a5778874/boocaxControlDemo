@@ -1,8 +1,10 @@
 package com.example.boobasedriver2.boobase;
 
 
+import android.app.Application;
 import android.content.Context;
 import android.util.ArrayMap;
+import android.util.Log;
 
 import com.example.boobasedriver2.boobase.entity.LocationEntity;
 import com.example.boobasedriver2.boobase.inter.IControllor;
@@ -28,11 +30,11 @@ public class BoobaseController {
      *
      * @param context
      */
-    public static synchronized void regist(Context context) {
+    public static synchronized void regist(Application context) {
         if (instance == null) {
             instance = new BoobaseController(context);
         }
-        LocationsManager.CreateInstance(context);
+        LocationsManager.CreateInstance();
         bindBoobaseService(context);
     }
 
@@ -99,6 +101,9 @@ public class BoobaseController {
         }
     }
 
+
+
+
     /**
      * 开始充电
      */
@@ -112,10 +117,6 @@ public class BoobaseController {
     public void chargeCancel() {
         if (controllor != null) controllor.chargeCancel();
     }
-
-
-
-
 
 
 }

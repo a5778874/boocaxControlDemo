@@ -8,14 +8,25 @@ import android.content.ServiceConnection;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.boobasedriver2.boobase.event.BoobaseSensor;
+import com.example.boobasedriver2.boobase.event.ChargeStatus;
+import com.example.boobasedriver2.boobase.event.EmergencyStatus;
+import com.example.boobasedriver2.boobase.event.LocationStatus;
+import com.example.boobasedriver2.boobase.event.MoveStatus;
+import com.example.boobasedriver2.boobase.event.SensorStatus;
+import com.example.boobasedriver2.boobase.event.WifiConfigureStatus;
 import com.example.boobasedriver2.boobase.inter.IControllor;
 import com.example.boobasedriver2.utils.FileUtil;
 import com.example.boobasedriver2.utils.MyInteger;
+import com.example.boobasedriver2.utils.PathManager;
 import com.gjdl.common.thread.CachedTreadPoolOperator;
+import com.iflytek.aiui.uartkit.util.SerialDataUtils;
 import com.iflytek.aiui.uartkit.util.SerialPortUtil;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -64,17 +75,23 @@ public class BoobaseService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("TAG", "BoobaseService onCreate:... ");
-        serialPortUtil = SerialPortUtil.getInstance(SerialPortUtil.SERIAL_PORT_COM1, SerialPortUtil.SERIAL_BAUDRATE_9600);
+        initSerial();
         initBoobaseConfig();
+        Log.d("TAG", "defalutSpeed: "+defalutSpeed);
     }
-
 
     private void initBoobaseConfig() {
         try {
             //读取配置文件Boobase.cfg中的默认配置速度信息，和移动模式
-            String configPath = "cfg/Boobase.cfg";
-            String cfg = FileUtil.readAssetsFile(getApplicationContext(), configPath);
+            String fileName = "Boobase.cfg";
+//            String cfg = FileUtil.readAssetsFile(getApplicationContext(), configPath);
+            String cfg = FileUtil.readFileFromSDCard(PathManager.CONFIGURATION_PATH, fileName);
+            if (TextUtils.isEmpty(cfg)) {
+                //todo 配置文件不存在
+                Log.e("TAG", "Boobase.cfg 不存在 ");
+                return;
+            }
+            Log.d("TAG", "initBoobaseConfig Boobase.cfg: \n " + cfg);
             JSONObject jsonObject = new JSONObject(cfg);
             defalutSpeed = (float) jsonObject.optDouble("speed");
             int moveType = jsonObject.optInt("moveType");
@@ -82,10 +99,62 @@ public class BoobaseService extends Service {
             defalutMoveType = (moveType == 0) ? BoobaseCMD.SAFE_MOVE.getFunctionCode() : BoobaseCMD.FORCEDLY_MOVE.getFunctionCode();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //todo 配置文件不存在
+            Log.e("TAG", "Boobase.cfg 配置有误 ");
         }
 
     }
+
+
+    private void initSerial() {
+        serialPortUtil = SerialPortUtil.getInstance(SerialPortUtil.SERIAL_PORT_COM1, SerialPortUtil.SERIAL_BAUDRATE_9600);
+        serialPortUtil.setOnDataReceiveListener(new SerialPortUtil.OnDataReceiveListener() {
+            @Override
+            public void onDataReceive(byte[] buffer, int size) {
+                postStatus(buffer);
+            }
+        });
+    }
+
+    private byte head1 = SerialDataUtils.HexToByte("AA");
+    private byte head2 = SerialDataUtils.HexToByte("55");
+
+    private void postStatus(byte[] buffer) {
+        if (buffer[0] == head1 && buffer[1] == head2) {
+            String functionCodeHex = SerialDataUtils.Byte2Hex(buffer[3]);
+
+            if (functionCodeHex.equals(BoobaseCMD.MOVE_STATUS.getFunctionCode())) {
+                //移动状态通知
+                EventBus.getDefault().post(new MoveStatus((int) buffer[4]));
+            } else if (functionCodeHex.equals(BoobaseCMD.LOCATION_STATUS.getFunctionCode())) {
+                //位置状态通知
+                EventBus.getDefault().post(new LocationStatus((int) buffer[4]));
+            } else if (functionCodeHex.equals(BoobaseCMD.CHARGE_STATUS.getFunctionCode())) {
+                //充电状态通知
+                EventBus.getDefault().post(new ChargeStatus((int) buffer[4]));
+            } else if (functionCodeHex.equals(BoobaseCMD.EMERGENCY_STATUS.getFunctionCode())) {
+                //紧急开关状态通知
+                EventBus.getDefault().post(new EmergencyStatus((int) buffer[4]));
+            } else if (functionCodeHex.equals(BoobaseCMD.CONFIGURE_WIFI.getFunctionCode())) {
+                //配置wifi状态通知
+                EventBus.getDefault().post(new WifiConfigureStatus((int) buffer[4]));
+            } else if (functionCodeHex.equals(BoobaseCMD.SENSOR_STATUS.getFunctionCode())) {
+                //传感器的状态通知
+                boolean uwbErrorStatus = (int) buffer[4] != 0;
+                boolean laserErrorStatus = (int) buffer[5] != 0;
+                boolean boobaseErrorStatus = (int) buffer[6] != 0;
+                boolean encodingDiskErrorStatus = (int) buffer[7] != 0;
+                boolean cameraErrorStatus = (int) buffer[8] != 0;
+                BoobaseSensor boobaseSensor = new BoobaseSensor(uwbErrorStatus, laserErrorStatus, boobaseErrorStatus, encodingDiskErrorStatus, cameraErrorStatus);
+                SensorStatus sensorStatus = new SensorStatus(boobaseSensor);
+                EventBus.getDefault().post(sensorStatus);
+            } else {
+                //其他
+            }
+
+        }
+    }
+
 
     /**
      * 开始发送控制命令到串口
@@ -95,7 +164,7 @@ public class BoobaseService extends Service {
             @Override
             public void run() {
                 serialPortUtil.sendCmds(controlCode);
-                Log.d("TAG", "sendCmds: " + controlCode+"..thread:"+Thread.currentThread().getName());
+                Log.d("TAG", "sendCmds: " + controlCode + "..thread:" + Thread.currentThread().getName());
             }
         });
 
@@ -470,8 +539,6 @@ public class BoobaseService extends Service {
         }
         return flag;
     }
-
-
 
 
 }

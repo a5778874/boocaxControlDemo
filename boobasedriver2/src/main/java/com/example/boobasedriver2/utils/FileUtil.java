@@ -6,10 +6,12 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -351,7 +353,7 @@ public class FileUtil {
         if (!directoryName.equals("")) {
             File path = Environment.getExternalStorageDirectory();
             File newPath = new File(path.toString() + directoryName);
-            status = newPath.mkdir();
+            status = newPath.mkdirs();
             status = true;
         } else
             status = false;
@@ -505,7 +507,6 @@ public class FileUtil {
 
     /**
      * 清空一个文件夹
-     *
      */
     public static void clearFileWithPath(String filePath) {
         List<File> files = FileUtil.listPathFiles(filePath);
@@ -591,18 +592,24 @@ public class FileUtil {
 
     /**
      * 创建目录
-     *
      */
     public static PathStatus createPath(String newPath) {
         File path = new File(newPath);
         if (path.exists()) {
             return PathStatus.EXITS;
         }
-        if (path.mkdir()) {
+        if (path.mkdirs()) {
             return PathStatus.SUCCESS;
         } else {
             return PathStatus.ERROR;
         }
+    }
+
+    /**
+     * 在SD卡下创建目录
+     */
+    public static PathStatus createSDPath(String newPath) {
+        return createPath(Environment.getExternalStorageDirectory().getPath() + newPath);
     }
 
     /**
@@ -635,6 +642,7 @@ public class FileUtil {
 
 
     //================================================================================================
+
     /**
      * 判断给定字符串是否空白串。 空白串是指由空格、制表符、回车符、换行符组成的字符串 若输入字符串为null或空字符串，返回true
      *
@@ -679,5 +687,59 @@ public class FileUtil {
         }
 
         return content;
+    }
+
+    public static String getSDPath() {
+        String sdPath = null;
+        boolean sdCardExist = Environment.getExternalStorageState().equals("mounted");
+        if (sdCardExist) {
+            File sdDir = Environment.getExternalStorageDirectory();
+            if (sdDir != null) {
+                sdPath = sdDir.toString();
+            }
+        }
+
+        return sdPath;
+    }
+
+    public static String readFileFromSDCard(String path, String fileName) {
+        File file = new File(getSDPath() + path + fileName);
+        if (!file.exists()) {
+            return null;
+        } else {
+            String text = null;
+            FileInputStream fileInputStream = null;
+            ByteArrayOutputStream outStream = null;
+
+            try {
+                fileInputStream = new FileInputStream(file);
+                outStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = fileInputStream.read(buffer)) != -1) {
+                    outStream.write(buffer, 0, len);
+                }
+
+                byte[] content_byte = outStream.toByteArray();
+                text = new String(content_byte, "UTF-8");
+            } catch (IOException var17) {
+                var17.printStackTrace();
+            } finally {
+                try {
+                    if (fileInputStream != null) {
+                        fileInputStream.close();
+                    }
+
+                    if (outStream != null) {
+                        outStream.close();
+                    }
+                } catch (IOException var16) {
+                    var16.printStackTrace();
+                }
+
+            }
+
+            return text;
+        }
     }
 }
