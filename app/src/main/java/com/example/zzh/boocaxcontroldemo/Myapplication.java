@@ -29,7 +29,5 @@ public class Myapplication extends Application {
         mInstance = this;
         LeakCanary.install(this);
         PathManager.initPath();
-        RobotManager.createInstance(this);
-
     }
 }

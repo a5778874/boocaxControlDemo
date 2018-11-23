@@ -16,6 +16,9 @@ public class SteerControllor extends BaseControllor {
 
     private static SteerControllor instance;
 
+    public static String steerCom = SerialPortUtil.SERIAL_PORT_COM0;
+    public static int steerRate = SerialPortUtil.SERIAL_BAUDRATE_9600;
+
     private SteerControllor() {
         initSerial();
     }
@@ -29,7 +32,8 @@ public class SteerControllor extends BaseControllor {
     }
 
     private void initSerial() {
-        serialPortUtil = SerialPortUtil.getInstance(SerialPortUtil.SERIAL_PORT_COM0, SerialPortUtil.SERIAL_BAUDRATE_9600);
+        Log.d("TAG1", "initSerial: " + steerCom + "," + steerRate);
+        serialPortUtil = SerialPortUtil.getInstance(steerCom, steerRate);
         serialPortUtil.setOnDataReceiveListener(new SerialPortUtil.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {

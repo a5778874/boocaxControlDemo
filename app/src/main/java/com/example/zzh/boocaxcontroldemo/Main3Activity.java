@@ -10,6 +10,7 @@ import com.example.boobasedriver2.boobase.BoobaseControllor;
 import com.example.boobasedriver2.steer.SteerBean;
 import com.example.boobasedriver2.steer.SteerBody;
 import com.example.boobasedriver2.steer.SteerControllor;
+import com.example.boobasedriver2.utils.SharePreferenceUtils;
 
 /**
  * create by zzh on 2018/10/22
@@ -23,8 +24,21 @@ public class Main3Activity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_3);
+        initData();
         initView();
 
+    }
+
+    private void initData() {
+        String steer = (String) SharePreferenceUtils.getParam(getApplicationContext(), "steer", "");
+        String steerRate = (String) SharePreferenceUtils.getParam(getApplicationContext(), "steerRate", "");
+
+        if (!TextUtils.isEmpty(steer)) {
+            SteerControllor.steerCom = steer;
+        }
+        if (!TextUtils.isEmpty(steerRate)) {
+            SteerControllor.steerRate = Integer.parseInt(steerRate);
+        }
     }
 
     private void initView() {
@@ -49,7 +63,8 @@ public class Main3Activity extends BaseActivity {
     }
 
     public void startSingleAction(View view) {
-        if (TextUtils.isEmpty(et_singleAngle.getText().toString())||TextUtils.isEmpty(et_singleAngle.getText().toString())||TextUtils.isEmpty(et_singleAngle.getText().toString()))return;
+        if (TextUtils.isEmpty(et_singleAngle.getText().toString()) || TextUtils.isEmpty(et_singleAngle.getText().toString()) || TextUtils.isEmpty(et_singleAngle.getText().toString()))
+            return;
         int angle = Integer.parseInt(et_singleAngle.getText().toString());
         int speed = Integer.parseInt(et_singleSpeed.getText().toString());
         int body = Integer.parseInt(et_singleBody.getText().toString());

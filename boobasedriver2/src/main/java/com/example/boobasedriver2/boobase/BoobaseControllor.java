@@ -46,6 +46,8 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
     private String controlCode = "";//按协议生成的控制命令
     private int controlCodeFlag = -1;  //控制标记，记录上一次操作的控制命令,每个命令的控制标记都是不重复的，避免重复调用而生成相同的控制码
 
+    public static String boobaseCom = SerialPortUtil.SERIAL_PORT_COM1;
+    public static int boobaseRate = SerialPortUtil.SERIAL_BAUDRATE_9600;
 
     private BoobaseControllor(Context context) {
         this.context = context;
@@ -95,7 +97,8 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
 
 
     private void initSerial() {
-        serialPortUtil = SerialPortUtil.getInstance(SerialPortUtil.SERIAL_PORT_COM1, SerialPortUtil.SERIAL_BAUDRATE_9600);
+        Log.d("TAG1", "initSerial: "+boobaseCom+","+boobaseRate);
+        serialPortUtil = SerialPortUtil.getInstance(boobaseCom, boobaseRate);
         serialPortUtil.setOnDataReceiveListener(new SerialPortUtil.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
@@ -221,7 +224,7 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
         int mFlag = generalFlag("turnLeft");
         if (controlCodeFlag != mFlag) {
             //controlCode = BoobaseCommandConverter.getInstance().convertProtocols(defalutMoveType, 0, 0, (float) (Math.PI / 2));
-            controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.ROTATION.getFunctionCode(),  (float) (Math.PI / 2));
+            controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.ROTATION.getFunctionCode(), (float) (Math.PI / 2));
             controlCodeFlag = mFlag;
             Log.i("TAG", "BoobaseService == turnLeft.... ");
         }
@@ -236,7 +239,7 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
         int mFlag = generalFlag("turnRight");
         if (controlCodeFlag != mFlag) {
             //controlCode = BoobaseCommandConverter.getInstance().convertProtocols(defalutMoveType, 0, 0, -(float) (Math.PI / 2));
-            controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.ROTATION.getFunctionCode(),  -(float) (Math.PI / 2));
+            controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.ROTATION.getFunctionCode(), -(float) (Math.PI / 2));
             controlCodeFlag = mFlag;
             Log.i("TAG", "BoobaseService == turnRight.... ");
         }
@@ -432,7 +435,6 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
         sendCmds();
     }
     //endregion
-
 
 
 }

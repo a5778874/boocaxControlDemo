@@ -12,7 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.boobasedriver2.RobotManager;
+import com.example.boobasedriver2.boobase.BoobaseControllor;
 import com.example.boobasedriver2.boobase.event.MoveStatus;
+import com.example.boobasedriver2.utils.SharePreferenceUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,11 +32,25 @@ public class Main2Activity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        initData();
+        RobotManager.createInstance(this);
         EventBus.getDefault().register(this);
 //        Log.d("TAG", "sdcardPath: " + Environment.getExternalStorageDirectory().getPath() + PathManager.CONFIGURATION_PATH);
 //        String s = FileUtil.readFileFromSDCard(PathManager.CONFIGURATION_PATH , "test.cfg");
 //        Log.d("TAG", "sd : "+s);
         initViews();
+    }
+
+    private void initData() {
+        String boobaseCom = (String) SharePreferenceUtils.getParam(getApplicationContext(), "boobase", "");
+        String boobaseRate = (String) SharePreferenceUtils.getParam(getApplicationContext(), "boobaseRate", "");
+
+        if (!TextUtils.isEmpty(boobaseCom)) {
+            BoobaseControllor.boobaseCom = boobaseCom;
+        }
+        if (!TextUtils.isEmpty(boobaseRate)) {
+            BoobaseControllor.boobaseRate = Integer.parseInt(boobaseRate);
+        }
     }
 
 
