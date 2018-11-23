@@ -1,8 +1,5 @@
 package com.example.zzh.boocaxcontroldemo;
 
-import android.os.SystemClock;
-
-import com.example.boobasedriver2.boobase.BoobaseController;
 import com.example.zzh.boocaxcontroldemo.Bean.WorkingStatus;
 import com.example.zzh.boocaxcontroldemo.proto.myTest;
 import com.google.protobuf.InvalidProtocolBufferException;

@@ -2,21 +2,15 @@ package com.example.zzh.boocaxcontroldemo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.boobasedriver2.boobase.BoobaseController;
-import com.example.boobasedriver2.boobase.BoobaseService;
+import com.example.boobasedriver2.RobotManager;
 import com.example.boobasedriver2.boobase.event.MoveStatus;
-import com.example.boobasedriver2.utils.FileUtil;
-import com.example.boobasedriver2.utils.PathManager;
-import com.example.zzh.boocaxcontroldemo.Bean.RobotStatus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,13 +36,13 @@ public class Main2Activity extends BaseActivity {
 
 
     private void initViews() {
-        et_ssid = findViewById(R.id.et_ssid);
-        et_psd = findViewById(R.id.et_psd);
-        et_x = findViewById(R.id.et_x);
-        et_y = findViewById(R.id.et_y);
-        et_yaw = findViewById(R.id.et_raw);
-        et_name = findViewById(R.id.et_name);
-        textView = findViewById(R.id.tv);
+        et_ssid = findViewById(R.id.et_ssid2);
+        et_psd = findViewById(R.id.et_pwd2);
+        et_x = findViewById(R.id.et_x2);
+        et_y = findViewById(R.id.et_y2);
+        et_yaw = findViewById(R.id.et_raw2);
+        et_name = findViewById(R.id.et_name2);
+        textView = findViewById(R.id.tv2);
 
     }
 
@@ -56,23 +50,23 @@ public class Main2Activity extends BaseActivity {
         String ssid = et_ssid.getText().toString();
         String psd = et_psd.getText().toString();
         if (!TextUtils.isEmpty(ssid) && !TextUtils.isEmpty(psd))
-            BoobaseController.getControl().connectWifi(ssid, psd);
+            RobotManager.getControl().connectWifi(ssid, psd);
     }
 
     public void moveForward(View view) {
-        BoobaseController.getControl().moveForward();
+        RobotManager.getControl().moveForward();
     }
 
     public void moveBackward(View view) {
-        BoobaseController.getControl().moveBackward();
+        RobotManager.getControl().moveBackward();
     }
 
     public void turnleft(View view) {
-        BoobaseController.getControl().turnLeft();
+        RobotManager.getControl().turnLeft();
     }
 
     public void turnright(View view) {
-        BoobaseController.getControl().turnRight();
+        RobotManager.getControl().turnRight();
     }
 
     public void travelOrdinal(View view) {
@@ -96,14 +90,14 @@ public class Main2Activity extends BaseActivity {
             float x = Float.parseFloat(xStr);
             float y = Float.parseFloat(yStr);
             float raw = Float.parseFloat(rawStr);
-            BoobaseController.getControl().navigationTo(x, y, raw);
+            RobotManager.getControl().navigationTo(x, y, raw);
         }
     }
 
     public void naviName(View view) {
         String name = et_name.getText().toString();
         if (!TextUtils.isEmpty(name)) {
-            BoobaseController.getControl().navigationTo(name);
+            RobotManager.getControl().navigationTo(name);
         }
     }
 
@@ -113,7 +107,7 @@ public class Main2Activity extends BaseActivity {
 
 
     public void stop(View view) {
-        BoobaseController.getControl().stopMove();
+        RobotManager.getControl().stopMove();
     }
 
     public void startActivity(View view) {
@@ -121,20 +115,21 @@ public class Main2Activity extends BaseActivity {
     }
 
     public void startCharge(View view) {
-        BoobaseController.getControl().chargeStart();
+        RobotManager.getControl().chargeStart();
     }
 
     public void stopCharge(View view) {
-        BoobaseController.getControl().chargeCancel();
+        RobotManager.getControl().chargeCancel();
     }
 
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void move(final MoveStatus moveStatus) {
+        Log.d("TAG", "move: " + moveStatus.getMsg());
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                textView.setText(moveStatus.getMsg());
+                textView.append(moveStatus.getMsg() + " \n");
             }
         });
     }
@@ -143,5 +138,11 @@ public class Main2Activity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    public void rotation(View view) {
+        if (TextUtils.isEmpty(et_yaw.getText().toString())) return;
+        int angle = Integer.parseInt(et_yaw.getText().toString());
+        RobotManager.getControl().rotationTo(angle);
     }
 }

@@ -1,14 +1,9 @@
 package com.example.zzh.boocaxcontroldemo;
 
 import android.app.Application;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.util.Log;
 
-import com.example.boobasedriver2.boobase.BoobaseController;
-import com.example.boobasedriver2.boobase.BoobaseService;
+import com.example.boobasedriver2.RobotManager;
+import com.example.boobasedriver2.boobase.BoobaseControllor;
 import com.example.boobasedriver2.utils.PathManager;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -34,7 +29,7 @@ public class Myapplication extends Application {
         mInstance = this;
         LeakCanary.install(this);
         PathManager.initPath();
-        BoobaseController.regist(this);
+        RobotManager.createInstance(this);
 
     }
 }

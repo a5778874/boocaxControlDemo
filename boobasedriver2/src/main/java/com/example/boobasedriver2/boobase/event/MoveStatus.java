@@ -58,4 +58,7 @@ public class MoveStatus {
     public void setMsg(int msg) {
         this.msg = msg;
     }
+
+
+
 }

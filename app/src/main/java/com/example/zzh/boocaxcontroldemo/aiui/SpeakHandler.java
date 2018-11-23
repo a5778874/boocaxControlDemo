@@ -6,7 +6,8 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.boobasedriver2.boobase.BoobaseController;
+import com.example.boobasedriver2.RobotManager;
+import com.example.boobasedriver2.boobase.BoobaseControllor;
 import com.example.zzh.boocaxcontroldemo.Bean.RobotStatus;
 import com.example.zzh.boocaxcontroldemo.Myapplication;
 
@@ -45,7 +46,7 @@ public class SpeakHandler implements SpeakListener {
                         Log.d(TAG, "---回起始位置-----");
                         String station = Myapplication.getInstance().station;
                         if (!TextUtils.isEmpty(station)) {
-                            BoobaseController.getControl().navigationTo(station); //一段时间无交互返回岗位
+                            RobotManager.getControl().navigationTo(station); //一段时间无交互返回岗位
                         }
                         //todo 导航完成开始人脸识别
                         //重置导航和参观状态

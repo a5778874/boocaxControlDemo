@@ -30,7 +30,6 @@
         </activity>
         <activity android:name=".Main3Activity"/>
 
-        <service android:name="com.example.boobasedriver2.boobase.BoobaseService"/>
     </application>
 
 </manifest>

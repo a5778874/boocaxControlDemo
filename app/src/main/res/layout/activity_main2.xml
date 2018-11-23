@@ -8,32 +8,46 @@
 
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_ssid"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="6"
-            android:hint="SSID" />
+            android:layout_weight="7">
 
-        <EditText
-            android:id="@+id/et_pwd"
+            <EditText
+                android:id="@+id/et_ssid2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="wifi名"
+                android:text="reeman_slam" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="6"
-            android:hint="psd" />
+            android:layout_weight="6">
+
+            <EditText
+                android:id="@+id/et_pwd2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="wifi密码"
+                android:text="12345678" />
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="connect_wifi"
-            android:text="WIFI连接" />
+            android:text="底盘wifi连接" />
     </LinearLayout>
 
     <LinearLayout
@@ -109,37 +123,57 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_x"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:hint="X" />
+            android:layout_weight="1">
 
-        <EditText
-            android:id="@+id/et_y"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:hint="Y" />
+            <EditText
+                android:id="@+id/et_x2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="X坐标" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/et_raw"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:hint="YAW" />
+            android:layout_weight="1">
 
-        <EditText
-            android:id="@+id/et_name"
+            <EditText
+                android:id="@+id/et_y2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="Y坐标" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:hint="name" />
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/et_raw2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="Yaw角度" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/et_name2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="导航地点" />
+        </android.support.design.widget.TextInputLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -166,20 +200,26 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="naviName"
-            android:text="naviName" />
+            android:text="导航到点" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="stop"
-            android:text="停止" />
+            android:onClick="rotation"
+            android:text="旋转" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="stop"
+            android:text="停止" />
 
         <Button
             android:layout_width="wrap_content"
@@ -197,7 +237,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="startActivity"
-            android:text="跳转到下一个activity" />
+            android:text="舵机控制"
+            android:textColor="#ff0000" />
 
     </LinearLayout>
 
@@ -206,7 +247,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv"
+            android:id="@+id/tv2"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </ScrollView>

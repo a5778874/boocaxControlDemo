@@ -32,7 +32,12 @@ public class SerialPortUtil {
     private InputStream mInputStream;
     private ReadThread mReadThread;
     //private int baudrate = 9600;//波特率
-    private static SerialPortUtil portUtil;
+    private static SerialPortUtil com0Util;
+    private static SerialPortUtil com1Util;
+    private static SerialPortUtil com2Util;
+    private static SerialPortUtil com3Util;
+    private static SerialPortUtil com4Util;
+
     private OnDataReceiveListener onDataReceiveListener = null;
     private boolean isStop = false;
 
@@ -49,12 +54,39 @@ public class SerialPortUtil {
         onDataReceiveListener = dataReceiveListener;
     }
 
+    //使用多例，防止初始化覆盖原来的串口
     public static SerialPortUtil getInstance(String comPath, int baudrate) {
-        if (null == portUtil) {
-            portUtil = new SerialPortUtil();
-        }
-        portUtil.onCreate(comPath, baudrate);
-        return portUtil;
+        if (comPath.equals(SERIAL_PORT_COM0)) {
+            if (null == com0Util) {
+                com0Util = new SerialPortUtil();
+            }
+            com0Util.onCreate(comPath, baudrate);
+            return com0Util;
+        } else if (comPath.equals(SERIAL_PORT_COM1)) {
+            if (null == com1Util) {
+                com1Util = new SerialPortUtil();
+            }
+            com1Util.onCreate(comPath, baudrate);
+            return com1Util;
+        } else if (comPath.equals(SERIAL_PORT_COM2)) {
+            if (null == com2Util) {
+                com2Util = new SerialPortUtil();
+            }
+            com2Util.onCreate(comPath, baudrate);
+            return com2Util;
+        } else if (comPath.equals(SERIAL_PORT_COM3)) {
+            if (null == com3Util) {
+                com3Util = new SerialPortUtil();
+            }
+            com3Util.onCreate(comPath, baudrate);
+            return com3Util;
+        } else if (comPath.equals(SERIAL_PORT_COM4)) {
+            if (null == com4Util) {
+                com4Util = new SerialPortUtil();
+            }
+            com4Util.onCreate(comPath, baudrate);
+            return com4Util;
+        } else return null;
     }
 
 

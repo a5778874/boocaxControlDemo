@@ -1,9 +1,11 @@
 package com.example.boobasedriver2.boobase.inter;
 
+import com.example.boobasedriver2.boobase.BaseControllor;
+
 /**
  * create by zzh on 2018/10/15
  */
-public interface IControllor {
+public interface IControllor  {
     void moveForward();  //向前移动
 
     void moveBackward(); //向后移动
