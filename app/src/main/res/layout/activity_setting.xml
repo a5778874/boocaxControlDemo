@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:text="底盘串口配置: "
+            android:textSize="20sp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/et_boobaserate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="底盘波特率"
+                android:inputType="number" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/rg_boobase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/boobase_com0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com0" />
+
+            <RadioButton
+                android:id="@+id/boobase_com1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com1" />
+
+            <RadioButton
+                android:id="@+id/boobase_com2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com2" />
+
+            <RadioButton
+                android:id="@+id/boobase_com3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com3" />
+
+            <RadioButton
+                android:id="@+id/boobase_com4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com4" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:text="舵机串口配置: "
+            android:textSize="20sp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/et_steerrate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="舵机波特率"
+                android:inputType="number" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/rg_steer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/steer_com0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com0" />
+
+            <RadioButton
+                android:id="@+id/steer_com1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com1" />
+
+            <RadioButton
+                android:id="@+id/steer_com2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com2" />
+
+            <RadioButton
+                android:id="@+id/steer_com3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com3" />
+
+            <RadioButton
+                android:id="@+id/steer_com4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com4" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:text="讯飞串口配置: "
+            android:textSize="20sp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/et_aiuirate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="讯飞波特率"
+                android:inputType="number" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/rg_aiui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/aiui_com0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com0" />
+
+            <RadioButton
+                android:id="@+id/aiui_com1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com1" />
+
+            <RadioButton
+                android:id="@+id/aiui_com2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com2" />
+
+            <RadioButton
+                android:id="@+id/aiui_com3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com3" />
+
+            <RadioButton
+                android:id="@+id/aiui_com4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="com4" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="save"
+        android:text="保存配置" />
+
+</LinearLayout>

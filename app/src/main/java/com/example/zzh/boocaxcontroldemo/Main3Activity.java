@@ -80,4 +80,20 @@ public class Main3Activity extends BaseActivity {
                 new SteerBean(rightarmAngle, rightarmSpeed, SteerBody.ArmRight),
                 new SteerBean(rightelbowAngle, rightelbowSpeed, SteerBody.ElbowRight));
     }
+
+    public void reset(View view) {
+        SteerControllor.getInstance().resetBody();
+    }
+
+    public void bye(View view) {
+        SteerControllor.getInstance().goodbye();
+    }
+
+    public void lefthand(View view) {
+        SteerControllor.getInstance().handUpLeft();
+    }
+
+    public void righthand(View view) {
+        SteerControllor.getInstance().handUpRight();
+    }
 }

@@ -3,6 +3,8 @@ package com.example.boobasedriver2.steer;
 
 import com.iflytek.aiui.uartkit.util.SerialDataUtils;
 
+import java.util.List;
+
 public class SteerCMDConvertor {
 
     private static SteerCMDConvertor instance;
@@ -48,13 +50,14 @@ public class SteerCMDConvertor {
     }
 
     //转为控制命令
-    public String formatCmd(SteerBean... steerBeans) {
-        int len = steerBeans.length * 4;
+    public String formatCmd(List<SteerBean> lists) {
+        //  int len = steerBeans.length * 4;
+        int len = lists.size() * 4;
         int crc = 1 + 1 + len;  //校验位，所有数据相加
         String dataLen = SerialDataUtils.IntToHex(len);  // 数据长度 = 头部占1字节 + Type占1字节+ 每个控制舵机命令占4字节 + 校验位1字节
         String datas = "";
 
-        for (SteerBean steerBean : steerBeans) {
+        for (SteerBean steerBean : lists) {
             int body = steerBean.getControlBody(); //部位id
             String bodyCmd = SerialDataUtils.IntToHex(body);
 

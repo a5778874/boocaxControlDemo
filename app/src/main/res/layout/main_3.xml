@@ -269,4 +269,28 @@
         android:onClick="startActionGroup"
         android:text="组合动作" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="reset"
+            android:text="复位舵机" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="lefthand"
+            android:text="伸左手" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="righthand"
+            android:text="伸右手" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="bye"
+            android:text="再见" />
+    </LinearLayout>
 </LinearLayout>

@@ -220,7 +220,8 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
     public void turnLeft() {
         int mFlag = generalFlag("turnLeft");
         if (controlCodeFlag != mFlag) {
-            controlCode = BoobaseCommandConverter.getInstance().convertProtocols(defalutMoveType, 0, 0, (float) (Math.PI / 2));
+            //controlCode = BoobaseCommandConverter.getInstance().convertProtocols(defalutMoveType, 0, 0, (float) (Math.PI / 2));
+            controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.ROTATION.getFunctionCode(),  (float) (Math.PI / 2));
             controlCodeFlag = mFlag;
             Log.i("TAG", "BoobaseService == turnLeft.... ");
         }
@@ -234,7 +235,8 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
     public void turnRight() {
         int mFlag = generalFlag("turnRight");
         if (controlCodeFlag != mFlag) {
-            controlCode = BoobaseCommandConverter.getInstance().convertProtocols(defalutMoveType, 0, 0, -(float) (Math.PI / 2));
+            //controlCode = BoobaseCommandConverter.getInstance().convertProtocols(defalutMoveType, 0, 0, -(float) (Math.PI / 2));
+            controlCode = BoobaseCommandConverter.getInstance().convertProtocols(BoobaseCMD.ROTATION.getFunctionCode(),  -(float) (Math.PI / 2));
             controlCodeFlag = mFlag;
             Log.i("TAG", "BoobaseService == turnRight.... ");
         }

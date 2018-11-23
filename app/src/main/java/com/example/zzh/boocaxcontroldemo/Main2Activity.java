@@ -3,11 +3,13 @@ package com.example.zzh.boocaxcontroldemo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.boobasedriver2.RobotManager;
 import com.example.boobasedriver2.boobase.event.MoveStatus;
@@ -22,6 +24,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class Main2Activity extends BaseActivity {
     private EditText et_ssid, et_psd, et_x, et_y, et_yaw, et_name;
     private TextView textView;
+    private FloatingActionButton bt_set;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +46,13 @@ public class Main2Activity extends BaseActivity {
         et_yaw = findViewById(R.id.et_raw2);
         et_name = findViewById(R.id.et_name2);
         textView = findViewById(R.id.tv2);
-
+        bt_set = findViewById(R.id.set);
+        bt_set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Main2Activity.this, SettingActivty.class));
+            }
+        });
     }
 
     public void connect_wifi(View view) {
@@ -129,7 +138,7 @@ public class Main2Activity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                textView.append(moveStatus.getMsg() + " \n");
+                textView.append("moveStatus:" + moveStatus.getMsg() + " ");
             }
         });
     }
@@ -144,5 +153,9 @@ public class Main2Activity extends BaseActivity {
         if (TextUtils.isEmpty(et_yaw.getText().toString())) return;
         int angle = Integer.parseInt(et_yaw.getText().toString());
         RobotManager.getControl().rotationTo(angle);
+    }
+
+    public void clear(View view) {
+        textView.setText("");
     }
 }
