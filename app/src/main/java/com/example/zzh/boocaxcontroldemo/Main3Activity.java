@@ -111,4 +111,12 @@ public class Main3Activity extends BaseActivity {
     public void righthand(View view) {
         SteerControllor.getInstance().handUpRight();
     }
+
+    public void handshake(View view) {
+        SteerControllor.getInstance().handshake();
+    }
+
+    public void hug(View view) {
+        SteerControllor.getInstance().hug();
+    }
 }

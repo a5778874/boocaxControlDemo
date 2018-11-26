@@ -292,5 +292,15 @@
             android:layout_height="wrap_content"
             android:onClick="bye"
             android:text="再见" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="handshake"
+            android:text="握手" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="hug"
+            android:text="拥抱" />
     </LinearLayout>
 </LinearLayout>
