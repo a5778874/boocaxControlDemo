@@ -102,7 +102,7 @@ public class BooBaseController implements LifecycleObserver, IController {
         serialPortUtil.setOnDataReceiveListener(new SerialPortUtil.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
-                Log.d(TAG, "串口接收: " + SerialDataUtils.ByteArrToHex(buffer));
+                Log.d(TAG, "boobase串口接收: " + SerialDataUtils.ByteArrToHex(buffer));
 
                 postStatus(buffer);
             }
@@ -113,7 +113,7 @@ public class BooBaseController implements LifecycleObserver, IController {
     private void postStatus(byte[] buffer) {
         if (buffer[0] == head1 && buffer[1] == head2) {
             String functionCodeHex = SerialDataUtils.Byte2Hex(buffer[3]);
-
+            Log.d("TAG", "functionCodeHex: "+functionCodeHex+".."+BoobaseCMD.EMERGENCY_STATUS.getFunctionCode());
             if (functionCodeHex.equals(BoobaseCMD.MOVE_STATUS.getFunctionCode())) {
                 //移动状态通知
                 EventBus.getDefault().post(new MoveStatus(buffer, (int) buffer[4]));
@@ -124,6 +124,7 @@ public class BooBaseController implements LifecycleObserver, IController {
                 //充电状态通知
                 EventBus.getDefault().post(new ChargeStatus(buffer, (int) buffer[4]));
             } else if (functionCodeHex.equals(BoobaseCMD.EMERGENCY_STATUS.getFunctionCode())) {
+                Log.d("TAG", "紧急开关状态通知: ");
                 //紧急开关状态通知
                 EventBus.getDefault().post(new EmergencyStatus(buffer, (int) buffer[4]));
             } else if (functionCodeHex.equals(BoobaseCMD.SENSOR_STATUS.getFunctionCode())) {

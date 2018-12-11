@@ -39,7 +39,6 @@ import java.io.UnsupportedEncodingException;
 public class BoobaseControllor extends BaseControllor implements IControllor {
 
     private static BoobaseControllor instance;
-    private Context context;
     private SerialPortUtil serialPortUtil;
     private float defalutSpeed = 0.37f; // 默认底盘移动的速度 0.37
     private String defalutMoveType = BoobaseCMD.SAFE_MOVE.getFunctionCode();   //默认为安全移动
@@ -49,18 +48,17 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
     public static String boobaseCom = SerialPortUtil.SERIAL_PORT_COM1;
     public static int boobaseRate = SerialPortUtil.SERIAL_BAUDRATE_9600;
 
-    private BoobaseControllor(Context context) {
-        this.context = context;
+    private BoobaseControllor() {
         initBoobaseConfig();
         initSerial();
     }
 
 
-    public static synchronized BoobaseControllor createInstance(Context context) {
+    public static synchronized BoobaseControllor createInstance() {
         //初始化串口
 
         if (instance == null) {
-            instance = new BoobaseControllor(context);
+            instance = new BoobaseControllor();
         }
         return instance;
     }
@@ -97,12 +95,12 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
 
 
     private void initSerial() {
-        Log.d("TAG1", "initSerial: "+boobaseCom+","+boobaseRate);
+        //Log.d("TAG1", "initSerial: "+boobaseCom+","+boobaseRate);
         serialPortUtil = SerialPortUtil.getInstance(boobaseCom, boobaseRate);
         serialPortUtil.setOnDataReceiveListener(new SerialPortUtil.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
-                Log.d("TAG", "onDataReceive: ");
+                Log.d("TAG1", "boobase串口接收: " + SerialDataUtils.ByteArrToHex(buffer));
                 postStatus(buffer);
             }
         });
@@ -114,7 +112,7 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
     private void postStatus(byte[] buffer) {
         if (buffer[0] == head1 && buffer[1] == head2) {
             String functionCodeHex = SerialDataUtils.Byte2Hex(buffer[3]);
-
+            Log.d("TAG2", "functionCodeHex: "+functionCodeHex+"..."+BoobaseCMD.EMERGENCY_STATUS.getFunctionCode());
             if (functionCodeHex.equals(BoobaseCMD.MOVE_STATUS.getFunctionCode())) {
                 //移动状态通知
                 EventBus.getDefault().post(new MoveStatus((int) buffer[4]));
@@ -126,6 +124,7 @@ public class BoobaseControllor extends BaseControllor implements IControllor {
                 EventBus.getDefault().post(new ChargeStatus((int) buffer[4]));
             } else if (functionCodeHex.equals(BoobaseCMD.EMERGENCY_STATUS.getFunctionCode())) {
                 //紧急开关状态通知
+                Log.d("TAG2", "紧急开关状态通知: ");
                 EventBus.getDefault().post(new EmergencyStatus((int) buffer[4]));
             } else if (functionCodeHex.equals(BoobaseCMD.CONFIGURE_WIFI.getFunctionCode())) {
                 //配置wifi状态通知

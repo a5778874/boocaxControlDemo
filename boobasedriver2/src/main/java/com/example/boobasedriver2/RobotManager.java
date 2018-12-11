@@ -20,7 +20,7 @@ public class RobotManager {
 
     private RobotManager(Context context) {
         this.context = context;
-        boobaseControllor = BoobaseControllor.createInstance(context);
+        boobaseControllor = BoobaseControllor.createInstance();
         locationsManager = LocationsManager.CreateInstance();
     }
 

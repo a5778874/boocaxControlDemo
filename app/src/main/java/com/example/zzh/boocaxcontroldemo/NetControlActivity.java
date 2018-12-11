@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,15 +20,23 @@ import robot.boocax.com.sdkmodule.entity.entity_sdk.for_app.UDPList;
 /**
  * create by zzh on 2018/8/9
  */
-public class NetControlActivity extends BaseActivity{
-private  final String TAG="TAG";
+public class NetControlActivity extends BaseActivity {
+    /**
+     * SDK内容
+     */
+    public static SharedPreferences sp_curDoc;
+    public static SharedPreferences.Editor editor_curDoc;//用于记录文件(服务器传来)
+
+    private final String TAG = "55555";
+    private String robotname="robot-guoji0001-SERVER";
+    private String serIP =null;
+    LoginEntity loginEntity=new LoginEntity();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_netcontrol);
         EventBus.getDefault().register(this);
-        startUDP();
     }
 
     public void startUDP() {
@@ -39,7 +48,6 @@ private  final String TAG="TAG";
             }
         }).start();
     }
-
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -59,8 +67,18 @@ private  final String TAG="TAG";
         @Override
         public void run() {
 
-
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    public void connect(View v) {
+        startUDP();
     }
 
 }

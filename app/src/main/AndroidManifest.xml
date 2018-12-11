@@ -16,7 +16,6 @@
         <activity
             android:name=".Main2Activity"
             android:configChanges="orientation|keyboardHidden|screenSize">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,10 +25,11 @@
         <activity
             android:name=".NetControlActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
-
         </activity>
         <activity android:name=".Main3Activity"/>
         <activity android:name=".SettingActivty"/>
+
+        <service android:name=".MyService_verify"/>
 
     </application>
 

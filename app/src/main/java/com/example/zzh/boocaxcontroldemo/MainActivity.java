@@ -41,11 +41,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        EventBus.getDefault().register(this);
         booBaseController = BooBaseController.getInstance(getApplicationContext());
         booBaseSetting = BooBaseSetting.init(getApplicationContext());
         getLifecycle().addObserver(booBaseController);
-        EventBus.getDefault().register(this);
         et_vx = findViewById(R.id.et_vx);
         et_vx.setText(booBaseSetting.getVelocityProperties() + "");
         et_vraw = findViewById(R.id.et_vraw);
@@ -139,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEmergencyStatusReciver(EmergencyStatus status) {
+        Log.d("TAG", "onEmergencyStatusReciver: "+status.getEmergencyStatus());
         switch (status.getEmergencyStatus()) {
             case 0:
                 tv.append("紧急开关开机后状态一直抬起未动过\n");
@@ -345,4 +345,6 @@ public class MainActivity extends AppCompatActivity {
         booBaseController.configureWIFI(ssid, pwd);
 
     }
+
+
 }

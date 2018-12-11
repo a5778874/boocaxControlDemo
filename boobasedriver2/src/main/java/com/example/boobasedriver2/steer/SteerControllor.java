@@ -6,9 +6,19 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.boobasedriver2.boobase.BaseControllor;
+import com.example.boobasedriver2.boobase.BoobaseCMD;
+import com.example.boobasedriver2.boobase.event.BoobaseSensor;
+import com.example.boobasedriver2.boobase.event.ChargeStatus;
+import com.example.boobasedriver2.boobase.event.EmergencyStatus;
+import com.example.boobasedriver2.boobase.event.LocationStatus;
+import com.example.boobasedriver2.boobase.event.MoveStatus;
+import com.example.boobasedriver2.boobase.event.SensorStatus;
+import com.example.boobasedriver2.boobase.event.WifiConfigureStatus;
 import com.gjdl.common.thread.CachedTreadPoolOperator;
 import com.iflytek.aiui.uartkit.util.SerialDataUtils;
 import com.iflytek.aiui.uartkit.util.SerialPortUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +103,8 @@ public class SteerControllor extends BaseControllor {
         serialPortUtil.setOnDataReceiveListener(new SerialPortUtil.OnDataReceiveListener() {
             @Override
             public void onDataReceive(byte[] buffer, int size) {
-                Log.d("TAG1", "onDataReceive: " + SerialDataUtils.ByteArrToHex(buffer));
+                Log.d("TAG1", Thread.currentThread().getName() + " steer串口接收: " + SerialDataUtils.ByteArrToHex(buffer));
+                postStatus(buffer);
             }
         });
     }
@@ -335,5 +346,23 @@ public class SteerControllor extends BaseControllor {
             }
         }, 0);
     }
+
+    private byte head1 = SerialDataUtils.HexToByte("01");
+    private byte head2 = SerialDataUtils.HexToByte("02");
+
+    private void postStatus(byte[] buffer) {
+        if (buffer[0] == head1 && buffer[1] == head2) {
+            if (buffer.length != 4) return;
+            String successFlagHex = SerialDataUtils.Byte2Hex(buffer[3]);        //01成功，02失败
+            boolean isSuccess = successFlagHex.equals("01");
+            if (!isSuccess) {
+                resetBody();        //如果失败则复位
+            }
+        }
+    }
+
+
+
+
 
 }
